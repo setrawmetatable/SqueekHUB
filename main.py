@@ -23,6 +23,10 @@ flask_thread.start()
 print("Starting bio monitor...")
 
 ROBLOSECURITY = os.getenv("ROBLOSECURITY")
+if not ROBLOSECURITY:
+    print("ROBLOSECURITY is missing!")
+    exit()
+    
 desired_bio = "set owns my soft kiffy"
 
 session = requests.Session()
