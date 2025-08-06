@@ -1,6 +1,26 @@
+# at the top
 import requests
 import time
 import os
+from flask import Flask
+from threading import Thread
+
+# fake web server to keep Render happy
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "I'm alive"
+
+def run_flask():
+    app.run(host='0.0.0.0', port=8080)
+
+flask_thread = Thread(target=run_flask)
+flask_thread.daemon = True
+flask_thread.start()
+
+# now your original code follows
+print("Starting bio monitor...")
 
 ROBLOSECURITY = os.getenv("ROBLOSECURITY")
 desired_bio = "set owns my soft kiffy"
