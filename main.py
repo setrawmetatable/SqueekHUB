@@ -89,20 +89,24 @@ def try_set_bio(new_bio):
 print("Starting bio monitor...")
 laststatus = False
 while True:
-    current_bio = get_bio()
-    # print(f"Current bio: {current_bio}")
+    try:
+        current_bio = get_bio()
+        print("Current bio:", current_bio)
+        
+        if current_bio.strip() != desired_bio:
+            laststatus = False
+            print("Bio doesn't match. Fixing...")
+            success = try_set_bio(desired_bio)
+            if not success:
+                print("Bio update failed. Retrying in 2 minutes...")
+                time.sleep(120)
+                continue
+        elif laststatus == False:
+            laststatus = True
+            print("Bio is correct.")
 
-    if current_bio.strip() != desired_bio:
-        laststatus = False
-    
-        print("Bio doesn't match. Fixing...")
-        success = try_set_bio(desired_bio)
-        if not success:
-            print("Bio update failed. Retrying in 3 seconds# ...")
-            time.sleep(120)
-            continue
-    elif laststatus == False:
-        laststatus = True
-        print("Bio is correct.")
+        time.sleep(3)
+    except Exception as e:
+        print("Error in loop:", e)
+        time.sleep(10)
 
-    time.sleep(3)  # Check again in 3 seconds
